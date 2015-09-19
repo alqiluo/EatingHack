@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.Random;
 
+import models.mysql.UserModel;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -11,7 +12,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class User extends Controller {
 	
 	public static Result register() {
+	//	{
+	//		"register" : {
+	//			"email" : "test@gmail.com",
+	//			"password" : "yousuck",
+	//			"udid" : "wut"
+	//		}
+	//	}
+	//	
+	//	{
+	//		"email" : "test@gmail.com",
+	//		"udid" : "wut",
+	//		"sessionStr" : "lasjdflkxjlj"
+	//	}
 		try {
+
+			
 			JsonNode json = request().body().asJson();
 			JsonNode registrationJson = json.findPath("register");
 			
@@ -19,20 +35,20 @@ public class User extends Controller {
 			String hashedPassword = registrationJson.get("password").textValue();
 			String udid = registrationJson.get("udid").textValue();
 
-			models.User user = models.User.find.where().eq("email", email).findUnique();
+			UserModel user = UserModel.find.where().eq("email", email).findUnique();
 			
 			if(user != null) {
 	    		return ok(Json.toJson("error: email not available"));
 			}
 			
-			user = new models.User();
+			user = new UserModel();
 	    	user.email = email;
 	    	user.hashedPassword = hashedPassword;
 	    	user.verified = false;
 	    	user.udid = udid;
 	    	user.sessionStr = getRandomHexString(255);
 	    	user.save();
-	    	user = models.User.find.where().eq("id", user.id).findUnique();
+	    	user = UserModel.find.where().eq("id", user.id).findUnique();
 	    	
 	    	user.hashedPassword = null;
 	    	
@@ -55,6 +71,20 @@ public class User extends Controller {
     }
 
 	public static Result login() {
+		//	{
+		//		"login" : {
+		//			"email" : "test@gmail.com",
+		//			"password" : "yousuck",
+		//			"udid" : "wut"
+		//		}
+		//	}
+		//	
+		//	{
+		//		"email" : "test@gmail.com",
+		//		"udid" : "wut",
+		//		"sessionStr" : "lasjdflkxjlj"
+		//	}
+		
 		try {
 			JsonNode json = request().body().asJson();
 			
@@ -64,7 +94,7 @@ public class User extends Controller {
 			String hashedPassword = loginJson.get("password").textValue();
 			String udid = loginJson.get("udid").textValue();
 			
-			models.User user = models.User.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));

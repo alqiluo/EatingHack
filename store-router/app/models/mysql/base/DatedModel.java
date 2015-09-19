@@ -1,4 +1,4 @@
-package models.base;
+package models.mysql.base;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
