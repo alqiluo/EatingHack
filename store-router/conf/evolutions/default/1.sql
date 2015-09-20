@@ -31,6 +31,16 @@ CREATE TABLE `yummly_ingredient` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `planned_recipe` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `recipe_id` int(11) DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `multiplier` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 # --- !Downs
 
 DROP TABLE IF EXISTS `user`;
@@ -38,3 +48,5 @@ DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `yummly_recipe`;
 
 DROP TABLE IF EXISTS `yummly_ingredient`;
+
+DROP TABLE IF EXISTS `planned_recipe`;

@@ -55,7 +55,7 @@ public class User extends Controller {
 	    	return ok(Json.toJson(user));
 		}
 		catch(Exception e) {
-			System.out.println("Register Exception: " + e.getMessage());
+			System.out.println("register Exception: " + e.getMessage());
 			return ok(Json.toJson("invalid request format"));
 		}
 	}
@@ -109,7 +109,7 @@ public class User extends Controller {
 			return ok(Json.toJson(user));
 		}
 		catch(Exception e) {
-			System.out.println("Login Exception: " + e.getMessage());
+			System.out.println("login Exception: " + e.getMessage());
 			return ok(Json.toJson("invalid request format"));
 		}
 	}

@@ -9,7 +9,7 @@ import models.mysql.base.DatedModel;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
-@Entity
+@Entity(name="user")
 @Table
 public class UserModel extends DatedModel {
 	

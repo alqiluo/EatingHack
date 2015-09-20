@@ -186,7 +186,7 @@ public class Recipe extends Controller {
 			}
 		}
 		catch(Exception e) {
-			System.out.println("searchExternalRecipe Exception: " + e.getMessage());
+			System.out.println("getRecipeIngredients Exception: " + e.getMessage());
 			return ok(Json.toJson("invalid request format"));
 		}
 		
