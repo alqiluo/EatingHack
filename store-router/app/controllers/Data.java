@@ -27,7 +27,7 @@ public class Data extends Controller {
 //		{
 //			"user" : {
 //				"email" : "test@gmail.com",
-//				"password" : "yousuck",
+//				"sessionStr" : "yousuck",
 //			},
 //			"dateRange" : {
 //				"start" 1234,
@@ -40,9 +40,9 @@ public class Data extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-	
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			String session = userJson.get("sessionStr").textValue();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
