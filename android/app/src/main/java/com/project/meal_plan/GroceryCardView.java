@@ -27,7 +27,7 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
     private GroceryItem footerItem;
     private ScrollView mScrollView;
 
-    private List<ListObject> groceryItems;
+    private List<ListObject> groceryItems = new ArrayList<>();
 
     public GroceryCardView(Context context, ScrollView scrollView) {
         super(context, R.layout.grocery_item);
@@ -64,6 +64,8 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
         List<ListObject> mObjects = new ArrayList<ListObject>();
 
         for (ListObject item : groceryItems) {
+            item.setOnItemClickListener(this);
+            item.setSwipeable(true);
             mObjects.add(item);
         }
 
