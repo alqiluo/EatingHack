@@ -3,7 +3,8 @@
 # ~~~~
 
 # test page
-GET     /                           controllers.Landing.index()
+GET     /                    		controllers.Landing.index()
+GET     /landing                    controllers.Landing.landing()
 
 # APIs
 POST	/register                 	controllers.User.register()
