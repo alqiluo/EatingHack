@@ -1,10 +1,17 @@
 package com.project.meal_plan;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +20,16 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
+import it.gmariotti.cardslib.library.prototypes.LinearListView;
 
-/**
- * Created by George on 2015-09-19.
- */
-public class GroceryCardView extends CardWithList {
+public class GroceryCardView extends CardWithList implements CardWithList.OnItemClickListener {
 
-    public GroceryCardView(Context context) {
+    private GroceryItem footerItem;
+    private ScrollView mScrollView;
+
+    public GroceryCardView(Context context, ScrollView scrollView) {
         super(context, R.layout.grocery_item);
+        mScrollView = scrollView;
     }
 
     @Override
@@ -28,17 +37,12 @@ public class GroceryCardView extends CardWithList {
         //Add Header
         CardHeader header = new CardHeader(getContext());
 
-        //Add a popup menu. This method set OverFlow button to visible
-//        header.setPopupMenu(R.menu.popup_item, new CardHeader.OnClickCardHeaderPopupMenuListener() {
-//            @Override
-//            public void onMenuItemClick(BaseCard card, MenuItem item) {
-//
-//                switch (item.getItemId()){
-//
-//                }
-//            }
-//        });
-        header.setTitle("Grocery"); //should use R.string.
+        header.setPopupMenu(R.menu.menu_main, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+            @Override
+            public void onMenuItemClick(BaseCard card, MenuItem item) {
+            }
+        });
+        header.setTitle("Grocery List");
         return header;
     }
 
@@ -56,21 +60,77 @@ public class GroceryCardView extends CardWithList {
     @Override
     protected List<ListObject> initChildren() {
         List<ListObject> mObjects = new ArrayList<ListObject>();
-        mObjects.add(makeGroceryItem());
-        mObjects.add(makeGroceryItem());
-        mObjects.add(makeGroceryItem());
+
+        for (int i = 0; i < 3; i++) {
+            mObjects.add(makeGroceryItem("Butter"));
+            mObjects.add(makeGroceryItem("Apples"));
+        }
+
+        footerItem = new GroceryItem(this, "Add a new grocery item");
+        footerItem.isFooter = true;
+        footerItem.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(LinearListView linearListView, View view, int i, ListObject listObject) {
+                final LinearListAdapter mListAdapter = getLinearListAdapter();
+
+                // TODO
+
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.add_item)
+                        .content("")
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
+                        .cancelable(true)
+                        .cancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .input("", "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                mListAdapter.remove(footerItem);
+                                if (input.length() != 0) {
+                                    mListAdapter.add(makeGroceryItem(input.toString()));
+                                }
+                                mListAdapter.add(footerItem);
+                                mScrollView.fullScroll(View.FOCUS_DOWN);
+                            }
+                        }).show();
+
+
+
+            }
+        });
+        mObjects.add(footerItem);
 
         return mObjects;
     }
 
-    private GroceryItem makeGroceryItem() {
-        GroceryItem gi = new GroceryItem(this);
-        gi.setSwipeable(true);
+    private GroceryItem makeGroceryItem(String text) {
+        GroceryItem gi = new GroceryItem(this, text);
+        gi.setSwipeable(true);      // TODO undo swipe
+
+        // TODO add OnClickListener
+        gi.setOnItemClickListener(this);
+
         return gi;
     }
 
     @Override
     public View setupChildView(int i, ListObject listObject, View view, ViewGroup viewGroup) {
+
+        TextView textView = (TextView) view.findViewById(R.id.textView);
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+
+        if (listObject instanceof  GroceryItem) {
+            if (((GroceryItem) listObject).isFooter) {
+                textView.setHint( listObject.getObjectId() );
+                checkBox.setVisibility(View.INVISIBLE);
+            } else {
+                textView.setText(listObject.getObjectId());
+            }
+        }
 
         return view;
     }
@@ -86,5 +146,22 @@ public class GroceryCardView extends CardWithList {
         super.setupInnerViewElements(parent, view);
 
         //Your elements
+    }
+
+    @Override
+    public void onItemClick(LinearListView linearListView, View view, int i, ListObject listObject) {
+        final TextView textView = (TextView) view.findViewById(R.id.textView);
+
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.edit_item)
+                .content("")
+                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
+                .cancelable(true)
+                .input("", textView.getText(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        textView.setText(input);
+                    }
+                }).show();
     }
 }

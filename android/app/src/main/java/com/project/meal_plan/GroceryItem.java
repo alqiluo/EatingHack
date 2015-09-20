@@ -8,15 +8,12 @@ import it.gmariotti.cardslib.library.prototypes.CardWithList.ListObject;
 import it.gmariotti.cardslib.library.prototypes.CardWithList.OnItemSwipeListener;
 import it.gmariotti.cardslib.library.prototypes.CardWithList.OnItemClickListener;
 
-/**
- * Created by George on 2015-09-19.
- */
 public class GroceryItem implements ListObject {
     public static String TAG = GroceryItem.class.toString();
 
-    public static int nextUid;
+    public boolean isFooter;
 
-    private int uid;
+    private String text;
 
     private boolean isSwipeable;
 
@@ -24,17 +21,14 @@ public class GroceryItem implements ListObject {
     private OnItemClickListener mClickListener;
     private OnItemSwipeListener mSwipeListener;
 
-    public GroceryItem(Card parentCard) {
-        uid = nextUid;
-        nextUid++;
-
+    public GroceryItem(Card parentCard, String text) {
         mParentCard = parentCard;
-        Log.d(TAG, "Uid : " + uid);
+        this.text = text;
     }
 
     @Override
     public String getObjectId() {
-        return uid + "";
+        return text;
     }
 
     @Override

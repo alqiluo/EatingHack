@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.project.meal_plan.GroceryListFragment">
@@ -10,16 +9,17 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
         <it.gmariotti.cardslib.library.view.CardViewNative
             android:id="@+id/groceryCard"
+            style="@style/card_external"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card:card_layout_resourceID="@layout/native_cardwithlist_layout"
-            style="@style/card_external"
-            />
-    </ScrollView>
+            android:padding="10dp"
+            card:card_layout_resourceID="@layout/native_cardwithlist_layout" />
 
+    </ScrollView>
 
 </FrameLayout>

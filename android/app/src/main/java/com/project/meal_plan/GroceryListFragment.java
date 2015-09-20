@@ -14,7 +14,6 @@ import it.gmariotti.cardslib.library.view.CardViewNative;
 public class GroceryListFragment extends Fragment {
 
     private ScrollView mScrollView;
-
     private GroceryCardView mGroceryCardView;
 
     public static GroceryListFragment newInstance() {
@@ -35,12 +34,13 @@ public class GroceryListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_grocery_list, container, false);
 
-        GroceryCardView groceryCard = new GroceryCardView(getActivity());
+        mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
+
+        GroceryCardView groceryCard = new GroceryCardView(getActivity(), mScrollView);
         groceryCard.init();
 
         CardViewNative cardView = (CardViewNative) view.findViewById(R.id.groceryCard);
         cardView.setCard(groceryCard);
-        //cardV
 
         return view;
     }

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="card_native_base_cardwithlist_divider_color">#E5E5E5</color>
+    <color name="divider_color">#ffffffff</color>
+    <!--<color name="card_native_base_cardwithlist_background_list_color">#10000000</color>-->
+    <color name="card_background_color">#ffffffff</color>
 </resources>
