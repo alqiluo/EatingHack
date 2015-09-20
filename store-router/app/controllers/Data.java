@@ -50,8 +50,8 @@ public class Data extends Controller {
 			
 			JsonNode dateRangeNode = json.get("dateRange");
 			
-			DateTime start = new DateTime(dateRangeNode.get("start").asInt());
-			DateTime end = new DateTime(dateRangeNode.get("end").asInt());
+			DateTime start = new DateTime(dateRangeNode.get("start").asLong());
+			DateTime end = new DateTime(dateRangeNode.get("end").asLong());
 			
 			List<PlannedRecipe> calendarRecipes = PlannedRecipe.find.where().eq("user_id", user.id).and(Expr.ge("start", start), Expr.le("end", end)).findList();
 			

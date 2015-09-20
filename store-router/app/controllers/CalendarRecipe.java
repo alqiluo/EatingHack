@@ -62,8 +62,8 @@ public class CalendarRecipe extends Controller {
 					PlannedRecipe plannedRecipe = new PlannedRecipe();
 					plannedRecipe.user = user;
 					plannedRecipe.recipe = recipe;
-					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
-					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
+					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asLong());
+					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asLong());
 					plannedRecipe.multiplier = calendarRecipeNode.get("multiplier").asInt();
 					
 					plannedRecipe.save();
@@ -105,8 +105,8 @@ public class CalendarRecipe extends Controller {
 			
 			JsonNode calendarRecipesNode = json.get("calendarRecipes");
 			
-			DateTime start = new DateTime(calendarRecipesNode.get("start").asInt());
-			DateTime end = new DateTime(calendarRecipesNode.get("end").asInt());
+			DateTime start = new DateTime(calendarRecipesNode.get("start").asLong());
+			DateTime end = new DateTime(calendarRecipesNode.get("end").asLong());
 			
 			List<PlannedRecipe> calendarRecipes = PlannedRecipe.find.where().eq("user_id", user.id).and(Expr.ge("start", start), Expr.le("end", end)).findList();
 			
@@ -159,8 +159,9 @@ public class CalendarRecipe extends Controller {
 			if(calendarRecipesNode.isArray()) {
 				for(JsonNode calendarRecipeNode : calendarRecipesNode) {
 					PlannedRecipe plannedRecipe = PlannedRecipe.find.where().eq("id", calendarRecipeNode.get("id").asInt()).findUnique();
-					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
-					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
+					plannedRecipe.user = user;
+					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asLong());
+					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asLong());
 					plannedRecipe.multiplier = calendarRecipeNode.get("multiplier").asInt();
 					
 					plannedRecipe.update();
