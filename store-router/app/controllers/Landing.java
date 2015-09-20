@@ -12,6 +12,10 @@ import play.mvc.Result;
 
 public class Landing extends Controller {
 
+	public static Result option(String all) {
+		return ok();
+	}
+	
 	public static Result index() {
 		return ok("GOOD");
 	}
