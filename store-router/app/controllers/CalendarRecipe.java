@@ -63,7 +63,7 @@ public class CalendarRecipe extends Controller {
 					plannedRecipe.recipe = recipe;
 					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
 					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
-					plannedRecipe.multiplier = calendarRecipeNode.get("multiplyer").asInt();
+					plannedRecipe.multiplier = calendarRecipeNode.get("multiplier").asInt();
 					
 					plannedRecipe.save();
 				}
@@ -161,7 +161,7 @@ public class CalendarRecipe extends Controller {
 
 					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
 					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
-					plannedRecipe.multiplier = calendarRecipeNode.get("multiplyer").asInt();
+					plannedRecipe.multiplier = calendarRecipeNode.get("multiplier").asInt();
 					
 					plannedRecipe.update();
 				}
