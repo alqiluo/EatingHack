@@ -5,4 +5,5 @@
     android:name="com.project.meal_plan.GroceryListFragment"
     tools:layout="@layout/fragment_grocery_list"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent" >
+</fragment>

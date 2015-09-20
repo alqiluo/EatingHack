@@ -9,20 +9,20 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
 import it.gmariotti.cardslib.library.prototypes.LinearListView;
 
 public class GroceryCardView extends CardWithList implements CardWithList.OnItemClickListener {
+
+    private static Object mutex = new Object();
 
     private GroceryItem footerItem;
     private ScrollView mScrollView;
@@ -146,19 +146,22 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
 
     @Override
     public void onItemClick(LinearListView linearListView, View view, int i, ListObject listObject) {
-        final TextView textView = (TextView) view.findViewById(R.id.textView);
 
-        new MaterialDialog.Builder(getContext())
-                .title(R.string.edit_item)
-                .content("")
-                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
-                .cancelable(true)
-                .input("", textView.getText(), new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                        textView.setText(input);
-                    }
-                }).show();
+        synchronized (mutex) {
+            final TextView textView = (TextView) view.findViewById(R.id.textView);
+
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.edit_item)
+                    .content("")
+                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
+                    .cancelable(true)
+                    .input("", textView.getText(), new MaterialDialog.InputCallback() {
+                        @Override
+                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                            textView.setText(input);
+                        }
+                    }).show();
+        }
     }
 
     private GroceryItem makeGroceryItem(String text) {

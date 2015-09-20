@@ -6,18 +6,15 @@ import android.annotation.TargetApi;
 
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,27 +27,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
 import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
@@ -98,6 +85,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mEmailLoginFormView = findViewById(R.id.email_login_form);
     }
 
+    @Override
+    public void back() {
+        
+    }
+
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
@@ -116,9 +108,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         // Store values at the time of the login attempt.
 //        final String email = mEmailView.getText().toString();
 //        String password = mPasswordView.getText().toString();
-        final String email = "george@gmail.com";
-        String password = "admin";
-
+        final String email = "test@gmail.com";
+        String password = "test";
 
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
@@ -153,6 +144,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     Toast.makeText(getApplicationContext(), "Failed to login", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, response.toString());
                     Log.d(TAG, login.toString());
+
+                    showProgress(false);
                 }
 
                 @Override
@@ -160,13 +153,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     Toast.makeText(getApplicationContext(), "Failed to login", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, responseString);
                     Log.d(TAG, login.toString());
+
+                    showProgress(false);
                 }
 
             });
         } catch (UnsupportedEncodingException e) {
-
+            showProgress(false);
         } catch (JSONException e) {
-
+            showProgress(false);
         }
     }
 

@@ -1,7 +1,5 @@
 package com.project.meal_plan;
 
-import android.util.Log;
-
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
 import it.gmariotti.cardslib.library.prototypes.CardWithList.ListObject;

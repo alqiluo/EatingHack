@@ -18,15 +18,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
-import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
@@ -57,16 +53,14 @@ public class GroceryListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        Intent intent = getActivity().getIntent();
-//        String[] params = intent.getStringArrayExtra(MainActivity.USER_PARAMS);
-//        if (params != null) {
-//            sessionStr = params[1];
-//            email = params[0];
-//        } else {
-//            getActivity().finish();
-//        }
-        email = "test@gmail.com";
-        sessionStr = "aa69c23f2a158b9ea5caea4eda4e1f7920642ee0a1faeba88e168b27c2ec8e164f3e1dfa4b744ec17a18a5feec63a32987d3f4f191b72a77a308332582adbad3166c476c893e127f28afc5043423e3c056d4b0483ec50925d3c0c2c1d8613b074bec5cf33f89691706608abe4b3a033d57b9d29efce2eeffbfe7ca1d16bffb3";
+        Intent intent = getActivity().getIntent();
+        String[] params = intent.getStringArrayExtra(MainActivity.USER_PARAMS);
+        if (params != null) {
+            sessionStr = params[1];
+            email = params[0];
+        } else {
+            getActivity().finish();
+        }
 
         View view = inflater.inflate(R.layout.fragment_grocery_list, container, false);
 
@@ -78,9 +72,6 @@ public class GroceryListFragment extends Fragment {
 
         try {
             readReceipes();
-
-//            groceryCard.setGroceryItems();
-//            groceryCard.init();
         } catch (UnsupportedEncodingException e) {
 
         } catch (JSONException e) {
