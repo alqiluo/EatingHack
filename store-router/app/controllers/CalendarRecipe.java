@@ -60,6 +60,7 @@ public class CalendarRecipe extends Controller {
 					YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", calendarRecipeNode.get("recipeId").asInt()).findUnique();
 					
 					PlannedRecipe plannedRecipe = new PlannedRecipe();
+					plannedRecipe.user = user;
 					plannedRecipe.recipe = recipe;
 					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
 					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
@@ -158,7 +159,6 @@ public class CalendarRecipe extends Controller {
 			if(calendarRecipesNode.isArray()) {
 				for(JsonNode calendarRecipeNode : calendarRecipesNode) {
 					PlannedRecipe plannedRecipe = PlannedRecipe.find.where().eq("id", calendarRecipeNode.get("id").asInt()).findUnique();
-
 					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
 					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
 					plannedRecipe.multiplier = calendarRecipeNode.get("multiplier").asInt();
