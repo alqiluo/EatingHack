@@ -13,6 +13,7 @@ import models.mysql.UserModel;
 import models.mysql.YummlyRecipe;
 
 import org.joda.time.DateTime;
+import org.json.JSONObject;
 
 import play.libs.Json;
 import play.mvc.Controller;
@@ -83,7 +84,9 @@ public class Data extends Controller {
 		        result.put( recipe, entry.getValue() );
 		    }
 			
-			return ok(Json.toJson(result));
+		    JSONObject jsonObject = new JSONObject(result);
+		    
+			return ok(Json.toJson(jsonObject.toString()));
 		}
 		catch(Exception e) {
 			System.out.println("readWeeklyRecipes Exception: " + e.getMessage());
