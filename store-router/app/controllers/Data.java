@@ -59,9 +59,9 @@ public class Data extends Controller {
 			
 			for(PlannedRecipe plannedRecipe : calendarRecipes) {
 				if(recipeCount.containsKey(plannedRecipe.recipe)) {
-					recipeCount.put(plannedRecipe.recipe, new Integer(recipeCount.get(plannedRecipe.recipe) + 1));
+					recipeCount.put(plannedRecipe.recipe, new Integer(recipeCount.get(plannedRecipe.recipe).intValue() + 1));
 				} else {
-					recipeCount.put(plannedRecipe.recipe, new Integer(0));
+					recipeCount.put(plannedRecipe.recipe, new Integer(1));
 				}
 			}
 			
