@@ -195,7 +195,7 @@ public class Recipe extends Controller {
 					YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", recipeNode.get("id").asInt()).findUnique();
 					for(YummlyIngredient ingredient : recipe.ingredients) {
 						if(netIngredientMap.containsKey(ingredient.name)) {
-							netIngredientMap.put(ingredient.name, netIngredientMap.get(ingredient.name) + recipeNode.get("multiplier").asInt());
+							netIngredientMap.put(ingredient.name, new Integer(netIngredientMap.get(ingredient.name).intValue() + recipeNode.get("multiplier").asInt()));
 						} else {
 							netIngredientMap.put(ingredient.name, new Integer(0));
 						}
