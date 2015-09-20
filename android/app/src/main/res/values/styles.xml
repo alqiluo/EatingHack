@@ -5,4 +5,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- Style for card with list -->
+    <style name="cardwithlist">
+        <item name="android:layout_marginTop">@dimen/card_base_cardwithlist_list_margin_top</item>
+        <item name="android:layout_marginLeft">@dimen/card_base_cardwithlist_list_margin_left</item>
+        <item name="android:divider">@color/card_native_base_cardwithlist_divider_color</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>

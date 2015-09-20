@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<it.gmariotti.cardslib.library.prototypes.LinearListView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_inner_base_main_cardwithlist"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/cardwithlist"
+    android:contextClickable="true"
+    android:clickable="true">
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New CheckBox"
+        android:id="@+id/checkBox"
+        android:layout_weight="1" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="2"
+        android:id="@+id/editText" />
+
+</it.gmariotti.cardslib.library.prototypes.LinearListView>

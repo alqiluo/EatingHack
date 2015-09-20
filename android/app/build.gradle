@@ -19,7 +19,23 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url 'https://repo1.maven.org/maven2/'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.0'
+
+    // HTTP request lib
+    compile 'com.loopj.android:android-async-http:1.4.9'
+
+    // Android Cards Lib
+    //Core
+    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
+
+    //Optional for built-in cards
+    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
 }
