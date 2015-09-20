@@ -55,31 +55,32 @@ public class Data extends Controller {
 			
 			List<PlannedRecipe> calendarRecipes = PlannedRecipe.find.where().eq("user_id", user.id).and(Expr.ge("start", start), Expr.le("end", end)).findList();
 			
-			Map<YummlyRecipe, Integer> recipeCount = new HashMap<YummlyRecipe, Integer>();
+			Map<Integer, Integer> recipeCount = new HashMap<Integer, Integer>();
 			
 			for(PlannedRecipe plannedRecipe : calendarRecipes) {
-				if(recipeCount.containsKey(plannedRecipe.recipe)) {
-					recipeCount.put(plannedRecipe.recipe, new Integer(recipeCount.get(plannedRecipe.recipe).intValue() + 1));
+				if(recipeCount.containsKey(plannedRecipe.recipe.id)) {
+					recipeCount.put(plannedRecipe.recipe.id, new Integer(recipeCount.get(plannedRecipe.recipe.id).intValue() + 1));
 				} else {
-					recipeCount.put(plannedRecipe.recipe, new Integer(1));
+					recipeCount.put(plannedRecipe.recipe.id, new Integer(1));
 				}
 			}
 			
-			List<Map.Entry<YummlyRecipe, Integer>> list =
+			List<Map.Entry<Integer, Integer>> list =
 			        new LinkedList<>( recipeCount.entrySet() );
-		    Collections.sort( list, new Comparator<Map.Entry<YummlyRecipe, Integer>>()
+		    Collections.sort( list, new Comparator<Map.Entry<Integer, Integer>>()
 		    {
 		        @Override
-		        public int compare( Map.Entry<YummlyRecipe, Integer> o1, Map.Entry<YummlyRecipe, Integer> o2 )
+		        public int compare( Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2 )
 		        {
 		            return (o2.getValue()).compareTo( o1.getValue() );
 		        }
 		    } );
 
 		    Map<YummlyRecipe, Integer> result = new LinkedHashMap<>();
-		    for (Map.Entry<YummlyRecipe, Integer> entry : list)
+		    for (Map.Entry<Integer, Integer> entry : list)
 		    {
-		        result.put( entry.getKey(), entry.getValue() );
+		    	YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", entry.getKey()).findUnique();
+		        result.put( recipe, entry.getValue() );
 		    }
 			
 			return ok(Json.toJson(result));
