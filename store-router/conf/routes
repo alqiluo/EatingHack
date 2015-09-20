@@ -1,0 +1,21 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# test page
+GET     /                           controllers.Landing.index()
+
+# APIs
+POST    /register                 	controllers.User.register()
+POST    /login                     	controllers.User.login()
+GET		/searchInternalRecipe		controllers.Recipe.searchInternalRecipe()
+GET		/searchExternalRecipe		controllers.Recipe.searchExternalRecipe()
+GET		/recipeIngredients			controllers.Recipe.getRecipeIngredients()
+
+POST	/weeklyRecipes				controllers.CalendarRecipe.createWeeklyRecipes()
+GET		/weeklyRecipes				controllers.CalendarRecipe.readWeeklyRecipes()
+PUT		/weeklyRecipes				controllers.CalendarRecipe.updateWeeklyRecipes()
+DELETE	/weeklyRecipes				controllers.CalendarRecipe.deleteWeeklyRecipes()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
