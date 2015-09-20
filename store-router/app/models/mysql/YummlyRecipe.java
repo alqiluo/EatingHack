@@ -12,8 +12,8 @@ import javax.persistence.Table;
 
 import play.db.ebean.Model;
 
-@Entity(name="yummly_recipe")
-@Table
+@Entity
+@Table(name="yummly_recipe")
 public class YummlyRecipe extends Model {
 	
 	private static final long serialVersionUID = 1L;

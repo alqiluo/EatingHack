@@ -6,8 +6,8 @@ import javax.persistence.Table;
 
 import play.db.ebean.Model;
 
-@Entity(name="yummly_ingredient")
-@Table
+@Entity
+@Table(name="yummly_ingredient")
 public class YummlyIngredient extends Model {
 
 	private static final long serialVersionUID = 1L;

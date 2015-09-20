@@ -11,8 +11,8 @@ import org.joda.time.DateTime;
 import play.data.format.Formats;
 import play.db.ebean.Model;
 
-@Entity(name="planned_recipe")
-@Table
+@Entity
+@Table(name="planned_recipe")
 public class PlannedRecipe extends Model {
 
 	private static final long serialVersionUID = 1L;
