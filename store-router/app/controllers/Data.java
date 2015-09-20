@@ -82,7 +82,7 @@ public class Data extends Controller {
 //		        result.put( entry.getKey(), entry.getValue() );
 //		    }
 			
-			return ok();
+			return ok(Json.toJson(calendarRecipes));
 			
 //			return ok(Json.toJson(result));
 		}
