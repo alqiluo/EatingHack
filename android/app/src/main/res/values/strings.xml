@@ -2,4 +2,7 @@
     <string name="app_name">meal-plan</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="add_item">Add to Grocery</string>
+    <string name="edit_item">Edit Item</string>
 </resources>
