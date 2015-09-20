@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,7 +14,6 @@ import models.mysql.UserModel;
 import models.mysql.YummlyRecipe;
 
 import org.joda.time.DateTime;
-import org.json.JSONObject;
 
 import play.libs.Json;
 import play.mvc.Controller;
@@ -35,6 +35,15 @@ public class Data extends Controller {
 //				"end" : 1456
 //			}
 //		}
+		
+		class Return {
+			
+			public List<YummlyRecipe> recipesInDescendingOrder;
+			
+			public List<Integer> recipesCountInDescendingOrder;
+			
+		};
+		
 		try {
 			JsonNode json = request().body().asJson();
 			
@@ -77,16 +86,17 @@ public class Data extends Controller {
 		        }
 		    } );
 
-		    Map<YummlyRecipe, Integer> result = new LinkedHashMap<>();
+		    Return _return = new Return();
+		    _return.recipesInDescendingOrder = new ArrayList<YummlyRecipe>();
+		    _return.recipesCountInDescendingOrder = new ArrayList<Integer>();
+		    
 		    for (Map.Entry<Integer, Integer> entry : list)
 		    {
-		    	YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", entry.getKey()).findUnique();
-		        result.put( recipe, entry.getValue() );
+		    	_return.recipesInDescendingOrder.add(YummlyRecipe.find.where().eq("id", entry.getKey()).findUnique());
+		    	_return.recipesCountInDescendingOrder.add(entry.getValue());
 		    }
 			
-		    JSONObject jsonObject = new JSONObject(result);
-		    
-			return ok(Json.toJson(jsonObject.toString()));
+			return ok(Json.toJson(_return));
 		}
 		catch(Exception e) {
 			System.out.println("readWeeklyRecipes Exception: " + e.getMessage());
