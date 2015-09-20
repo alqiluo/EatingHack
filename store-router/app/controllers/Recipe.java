@@ -197,7 +197,7 @@ public class Recipe extends Controller {
 						if(netIngredientMap.containsKey(ingredient.name)) {
 							netIngredientMap.put(ingredient.name, netIngredientMap.get(ingredient.name) + recipeNode.get("multiplier").asInt());
 						} else {
-							netIngredientMap.put(ingredient.name, 0);
+							netIngredientMap.put(ingredient.name, new Integer(0));
 						}
 					}
 				}
