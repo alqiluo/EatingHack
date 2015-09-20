@@ -194,9 +194,12 @@ public class Recipe extends Controller {
 				for(JsonNode recipeNode : recipesNode) {
 					YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", recipeNode.get("id").asInt()).findUnique();
 					for(YummlyIngredient ingredient : recipe.ingredients) {
+						System.out.println("Multiplier " + recipeNode.get("multiplier").asInt());
 						if(netIngredientMap.containsKey(ingredient.name)) {
+							System.out.println("Count " + netIngredientMap.get(ingredient.name).intValue() + " + " + recipeNode.get("multiplier").asInt() + " = " + new Integer(netIngredientMap.get(ingredient.name).intValue() + recipeNode.get("multiplier").asInt()));
 							netIngredientMap.put(ingredient.name, new Integer(netIngredientMap.get(ingredient.name).intValue() + recipeNode.get("multiplier").asInt()));
 						} else {
+							System.out.println("Count " + 0);
 							netIngredientMap.put(ingredient.name, new Integer(0));
 						}
 					}
