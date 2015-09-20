@@ -27,6 +27,8 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
     private GroceryItem footerItem;
     private ScrollView mScrollView;
 
+    private List<ListObject> groceryItems;
+
     public GroceryCardView(Context context, ScrollView scrollView) {
         super(context, R.layout.grocery_item);
         mScrollView = scrollView;
@@ -61,9 +63,8 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
     protected List<ListObject> initChildren() {
         List<ListObject> mObjects = new ArrayList<ListObject>();
 
-        for (int i = 0; i < 3; i++) {
-            mObjects.add(makeGroceryItem("Butter"));
-            mObjects.add(makeGroceryItem("Apples"));
+        for (ListObject item : groceryItems) {
+            mObjects.add(item);
         }
 
         footerItem = new GroceryItem(this, "Add a new grocery item");
@@ -99,22 +100,11 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
                         }).show();
 
 
-
             }
         });
         mObjects.add(footerItem);
 
         return mObjects;
-    }
-
-    private GroceryItem makeGroceryItem(String text) {
-        GroceryItem gi = new GroceryItem(this, text);
-        gi.setSwipeable(true);      // TODO undo swipe
-
-        // TODO add OnClickListener
-        gi.setOnItemClickListener(this);
-
-        return gi;
     }
 
     @Override
@@ -133,6 +123,10 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
         }
 
         return view;
+    }
+
+    public void setGroceryItems(List<ListObject> list) {
+        groceryItems = list;
     }
 
     @Override
@@ -163,5 +157,15 @@ public class GroceryCardView extends CardWithList implements CardWithList.OnItem
                         textView.setText(input);
                     }
                 }).show();
+    }
+
+    private GroceryItem makeGroceryItem(String text) {
+        GroceryItem gi = new GroceryItem(this, text);
+        gi.setSwipeable(true);      // TODO undo swipe
+
+        // TODO add OnClickListener
+        gi.setOnItemClickListener(this);
+
+        return gi;
     }
 }

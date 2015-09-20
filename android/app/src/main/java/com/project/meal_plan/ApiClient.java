@@ -1,9 +1,13 @@
 package com.project.meal_plan;
 
+import android.content.Context;
+
 import com.loopj.android.http.*;
 
+import cz.msebera.android.httpclient.HttpEntity;
+
 public class ApiClient {
-    private static final String BASE_API_URL = "";
+    private static final String BASE_API_URL = "http://52.89.108.166:9000";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -11,8 +15,8 @@ public class ApiClient {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.post(getAbsoluteUrl(url), params, responseHandler);
+    public static void post(Context context, String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
+        client.post(context, getAbsoluteUrl(url), entity, "application/json", responseHandler);
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
