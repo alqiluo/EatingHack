@@ -13,6 +13,10 @@ import play.mvc.Result;
 public class Landing extends Controller {
 
 	public static Result index() {
+		return ok("GOOD");
+	}
+	
+	public static Result landing() {
 //		RecipeSearch search = new RecipeSearch();
 //		Promise<String> response = search.perform("soup");
 //		
