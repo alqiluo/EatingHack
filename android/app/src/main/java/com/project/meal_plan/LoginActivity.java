@@ -85,11 +85,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mEmailLoginFormView = findViewById(R.id.email_login_form);
     }
 
-    @Override
-    public void back() {
-        
-    }
-
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
@@ -106,10 +101,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-//        final String email = mEmailView.getText().toString();
-//        String password = mPasswordView.getText().toString();
-        final String email = "test@gmail.com";
-        String password = "test";
+        final String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+//        final String email = "test@gmail.com";
+//        String password = "test";
 
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
@@ -142,7 +137,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
                     Toast.makeText(getApplicationContext(), "Failed to login", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, response.toString());
+                    if (response != null) {
+                        Log.d(TAG, response.toString());
+                    }
                     Log.d(TAG, login.toString());
 
                     showProgress(false);
