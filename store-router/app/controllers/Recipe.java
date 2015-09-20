@@ -36,11 +36,11 @@ public class Recipe extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
+			String session = userJson.get("sessionStr").textValue();
 			
 			searchText = json.get("search").asText();
 			
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
@@ -77,11 +77,11 @@ public class Recipe extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-
+			String session = userJson.get("sessionStr").textValue();
+			
 			searchText = json.get("search").asText();
-
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
@@ -156,10 +156,21 @@ public class Recipe extends Controller {
 //				"email" : "asdf@gmail.com",
 //				"sessionStr" : "aswldfjlx"
 //			},
-//			"recipeIds" : [123,1234,413,31]
+//			"recipes" : [
+//				{
+//					"id": 123,
+//					"multiplier" : 1 
+//				},
+//				{
+//					"id": 124,
+//					"multiplier" : 2 
+//				},
+//				{
+//					"id": 121,
+//					"multiplier" : 1 
+//				}
+//			]
 //		}
-		
-		List<Integer> recipeIds = new ArrayList<Integer>();
 		
 		Map<String, Integer> netIngredientMap = new HashMap<String, Integer>();
 		
@@ -169,36 +180,32 @@ public class Recipe extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			String session = userJson.get("sessionStr").textValue();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
 			}
 			
-			JsonNode recipeIdsNode = json.get("recipeIds");
+			JsonNode recipesNode = json.get("recipes");
 			
-			if(recipeIdsNode.isArray()) {
-				for(JsonNode recipeIdNode : recipeIdsNode) {
-					recipeIds.add(recipeIdNode.asInt());
+			if(recipesNode.isArray()) {
+				for(JsonNode recipeNode : recipesNode) {
+					YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", recipeNode.get("id")).findUnique();
+					for(YummlyIngredient ingredient : recipe.ingredients) {
+						if(netIngredientMap.containsKey(ingredient.name)) {
+							netIngredientMap.put(ingredient.name, netIngredientMap.get(ingredient.name) + recipeNode.get("multiplier").asInt());
+						} else {
+							netIngredientMap.put(ingredient.name, 0);
+						}
+					}
 				}
 			}
 		}
 		catch(Exception e) {
 			System.out.println("getRecipeIngredients Exception: " + e.getMessage());
 			return ok(Json.toJson("invalid request format"));
-		}
-		
-		for(Integer recipeId : recipeIds) {
-			YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", recipeId).findUnique();
-			for(YummlyIngredient ingredient : recipe.ingredients) {
-				if(netIngredientMap.containsKey(ingredient.name)) {
-					netIngredientMap.put(ingredient.name, netIngredientMap.get(ingredient.name) + 1);
-				} else {
-					netIngredientMap.put(ingredient.name, 0);
-				}
-			}
 		}
 		
 		return ok(Json.toJson(netIngredientMap));

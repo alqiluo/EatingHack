@@ -9,8 +9,8 @@ import models.mysql.base.DatedModel;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
-@Entity(name="user")
-@Table
+@Entity
+@Table(name="user")
 public class UserModel extends DatedModel {
 	
 	private static final long serialVersionUID = 1L;

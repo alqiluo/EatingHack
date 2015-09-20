@@ -6,6 +6,8 @@
 GET     /                    		controllers.Landing.index()
 GET     /landing                    controllers.Landing.landing()
 
+OPTIONS /*all						controllers.Landing.option(all)
+
 # APIs
 POST	/register                 	controllers.User.register()
 POST	/login                     	controllers.User.login()

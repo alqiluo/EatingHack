@@ -45,9 +45,9 @@ public class CalendarRecipe extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-	
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			String session = userJson.get("sessionStr").textValue();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
@@ -60,10 +60,11 @@ public class CalendarRecipe extends Controller {
 					YummlyRecipe recipe = YummlyRecipe.find.where().eq("id", calendarRecipeNode.get("recipeId").asInt()).findUnique();
 					
 					PlannedRecipe plannedRecipe = new PlannedRecipe();
+					plannedRecipe.user = user;
 					plannedRecipe.recipe = recipe;
-					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
-					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
-					plannedRecipe.multiplier = calendarRecipeNode.get("multiplyer").asInt();
+					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asLong());
+					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asLong());
+					plannedRecipe.multiplier = calendarRecipeNode.get("multiplier").asInt();
 					
 					plannedRecipe.save();
 				}
@@ -94,9 +95,9 @@ public class CalendarRecipe extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-	
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			String session = userJson.get("sessionStr").textValue();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
@@ -104,8 +105,8 @@ public class CalendarRecipe extends Controller {
 			
 			JsonNode calendarRecipesNode = json.get("calendarRecipes");
 			
-			DateTime start = new DateTime(calendarRecipesNode.get("start").asInt());
-			DateTime end = new DateTime(calendarRecipesNode.get("end").asInt());
+			DateTime start = new DateTime(calendarRecipesNode.get("start").asLong());
+			DateTime end = new DateTime(calendarRecipesNode.get("end").asLong());
 			
 			List<PlannedRecipe> calendarRecipes = PlannedRecipe.find.where().eq("user_id", user.id).and(Expr.ge("start", start), Expr.le("end", end)).findList();
 			
@@ -145,9 +146,9 @@ public class CalendarRecipe extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-	
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			String session = userJson.get("sessionStr").textValue();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
@@ -158,10 +159,10 @@ public class CalendarRecipe extends Controller {
 			if(calendarRecipesNode.isArray()) {
 				for(JsonNode calendarRecipeNode : calendarRecipesNode) {
 					PlannedRecipe plannedRecipe = PlannedRecipe.find.where().eq("id", calendarRecipeNode.get("id").asInt()).findUnique();
-
-					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asInt());
-					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asInt());
-					plannedRecipe.multiplier = calendarRecipeNode.get("multiplyer").asInt();
+					plannedRecipe.user = user;
+					plannedRecipe.start = new DateTime(calendarRecipeNode.get("start").asLong());
+					plannedRecipe.end = new DateTime(calendarRecipeNode.get("end").asLong());
+					plannedRecipe.multiplier = calendarRecipeNode.get("multiplier").asInt();
 					
 					plannedRecipe.update();
 				}
@@ -193,9 +194,9 @@ public class CalendarRecipe extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-	
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			String session = userJson.get("sessionStr").textValue();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));

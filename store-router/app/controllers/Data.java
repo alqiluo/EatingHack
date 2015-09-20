@@ -27,7 +27,7 @@ public class Data extends Controller {
 //		{
 //			"user" : {
 //				"email" : "test@gmail.com",
-//				"password" : "yousuck",
+//				"sessionStr" : "yousuck",
 //			},
 //			"dateRange" : {
 //				"start" 1234,
@@ -40,9 +40,9 @@ public class Data extends Controller {
 			JsonNode userJson = json.findPath("user");
 			
 			String email = userJson.get("email").textValue();
-			String hashedPassword = userJson.get("password").textValue();
-	
-			UserModel user = UserModel.find.where().eq("email", email).eq("hashedPassword", hashedPassword).findUnique();
+			String session = userJson.get("sessionStr").textValue();
+			
+			UserModel user = UserModel.find.where().eq("email", email).eq("session_str", session).findUnique();
 			
 			if(user == null) {
 				return ok(Json.toJson("error: login failed"));
@@ -50,8 +50,8 @@ public class Data extends Controller {
 			
 			JsonNode dateRangeNode = json.get("dateRange");
 			
-			DateTime start = new DateTime(dateRangeNode.get("start").asInt());
-			DateTime end = new DateTime(dateRangeNode.get("end").asInt());
+			DateTime start = new DateTime(dateRangeNode.get("start").asLong());
+			DateTime end = new DateTime(dateRangeNode.get("end").asLong());
 			
 			List<PlannedRecipe> calendarRecipes = PlannedRecipe.find.where().eq("user_id", user.id).and(Expr.ge("start", start), Expr.le("end", end)).findList();
 			
