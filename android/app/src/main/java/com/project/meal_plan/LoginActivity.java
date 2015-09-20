@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,25 +28,33 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.NameValuePair;
+import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    private static String TAG = LoginActivity.class.toString();
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -86,7 +96,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         mEmailLoginFormView = findViewById(R.id.email_login_form);
-        mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
     }
 
     private void populateAutoComplete() {
@@ -100,33 +109,65 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+//        final String email = mEmailView.getText().toString();
+//        String password = mPasswordView.getText().toString();
+        final String email = "george@gmail.com";
+        String password = "admin";
 
 
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         showProgress(true);
 
-        RequestParams params = new RequestParams();
-        params.add("username", email);
-        params.add("password", password);
-        ApiClient.get("/login", params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                String seesionId = response.get("")
-            }
+        try {
+            final JSONObject login = new JSONObject();
+            JSONObject json = new JSONObject();
+            json.put("email", email);
+            json.put("password", password);
+            json.put("udid", "wut");
 
-        });
+            login.put("login", json);
+
+            ApiClient.post(getApplicationContext(), "/login", new StringEntity(login.toString()), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        String seesionStr = response.getString("sessionStr");
+
+                        Intent main_intent = new Intent();
+                        main_intent.putExtra(MainActivity.USER_PARAMS, new String[]{email, seesionStr, "wut"});
+                        main_intent.setClass(getApplicationContext(), MainActivity.class);
+                        startActivity(main_intent);
+                    } catch (JSONException e) {
+                        Log.e(TAG, ">.> Alex");
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                    Toast.makeText(getApplicationContext(), "Failed to login", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, response.toString());
+                    Log.d(TAG, login.toString());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(getApplicationContext(), "Failed to login", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, responseString);
+                    Log.d(TAG, login.toString());
+                }
+
+            });
+        } catch (UnsupportedEncodingException e) {
+
+        } catch (JSONException e) {
+
+        }
     }
 
     /**
